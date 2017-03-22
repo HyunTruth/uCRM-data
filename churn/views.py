@@ -25,7 +25,8 @@ class ChurnedSharedFunctionView(PandasSimpleView):
         current_user = self.check_permissions(request)
         print(request.query_params)
         if current_user['type'] == 'staff':
-            total_churn_data = pd.DataFrame(list(Member.objects.filter(space=current_user['space_id']).filter(end_date__isnull=False).values()))
+            total_churn_data = pd.DataFrame(list(Member.objects.filter(space=current_user['space_id']).filter(end_date__isnull=False)
+                                                 .exclude(end_reason__contains='입력오류').values()))
         elif current_user['type'] == 'comp':
 
             # if len(current_user['space_list']) <= 0:
@@ -39,14 +40,16 @@ class ChurnedSharedFunctionView(PandasSimpleView):
             # if is_permitted_space is False:
             #     raise PermissionDenied()
 
-            total_churn_data = pd.DataFrame(list(Member.objects.filter(space=request.query_params['space_id']).filter(end_date__isnull=False).values()))
+            total_churn_data = pd.DataFrame(list(Member.objects.filter(space=request.query_params['space_id']).filter(end_date__isnull=False)
+                                                 .exclude(end_reason__contains='입력오류').values()))
         return total_churn_data
 
     def get_yearly_churned(self, request):
         current_user = self.check_permissions(request)
         now = datetime.date.today()
         if current_user['type'] == 'staff':
-            yearly_churn = pd.DataFrame(list(Member.objects.filter(space=current_user['space_id']).filter(end_date__isnull=False).filter(end_date__year=now.year).values()))
+            yearly_churn = pd.DataFrame(list(Member.objects.filter(space=current_user['space_id']).filter(end_date__isnull=False)
+                                             .filter(end_date__year=now.year).exclude(end_reason__contains='입력오류').values()))
         elif current_user['type'] == 'comp':
 
             # if len(current_user['space_list']) <= 0:
@@ -61,7 +64,8 @@ class ChurnedSharedFunctionView(PandasSimpleView):
             # if is_permitted_space is False:
             #     raise PermissionDenied()
 
-            yearly_churn = pd.DataFrame(list(Member.objects.filter(space=request.query_params['space_id']).filter(end_date__isnull=False).filter(end_date__year=now.year).values()))
+            yearly_churn = pd.DataFrame(list(Member.objects.filter(space=request.query_params['space_id']).filter(end_date__isnull=False)
+                                             .filter(end_date__year=now.year).exclude(end_reason__contains='입력오류').values()))
         return yearly_churn
 
 
