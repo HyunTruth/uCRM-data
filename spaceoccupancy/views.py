@@ -108,14 +108,14 @@ class BillingPlanOccupancyView(OccupancySharedFunctionView):
         billing_plan = self.get_billing_plan(request)
         billing_plan_mapper = {}
 
-        for plans in billing_plan:
-            billing_plan_mapper[plans['id']] = plans['name']
-        total_payment_list['bill_plan_id'] = total_payment_list['bill_plan_id'].map(billing_plan_mapper)
-
-        if total_payment_list['bill_plan_id'].isnull().values.sum() > 0:
-            raise NotFound('There is some error in space-billing plan association')
-
         try:
+            for plans in billing_plan:
+                billing_plan_mapper[plans['id']] = plans['name']
+            total_payment_list['bill_plan_id'] = total_payment_list['bill_plan_id'].map(billing_plan_mapper)
+
+            if total_payment_list['bill_plan_id'].isnull().values.sum() > 0:
+                raise NotFound('There is some error in space-billing plan association')
+
             total_payment_data = total_payment_list.groupby('bill_plan_id').size().astype(float)
 
             billing_plan_percentage = total_payment_data.apply(lambda x, i = total_payment_data.sum(): x / i * 100)

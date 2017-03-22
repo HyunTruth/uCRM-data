@@ -162,8 +162,9 @@ class RevenuesBillingPlanMonthView(RevenuesSharedFunctionView):
         this_month_balance = self.process_balance_data(request, this_month_data)
         this_month_revenues = this_month_balance['revenues']
         this_month_expense = this_month_balance['expense']
-        summary = this_month_revenues.drop(this_month_revenues.columns[[1,2,3,4,5,6,7]], axis=1).groupby('bill_plan_id').sum()
         try:
+            summary = this_month_revenues.drop(this_month_revenues.columns[[1, 2, 3, 4, 5, 6, 7]], axis=1).groupby(
+                'bill_plan_id').sum()
             try:
                 sum_expense = this_month_expense['amount'].sum()
             except:

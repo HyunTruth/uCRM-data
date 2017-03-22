@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../uCRM/.idea/uCRM.iml" filepath="$PROJECT_DIR$/../uCRM/.idea/uCRM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/uCRM-data.iml" filepath="$PROJECT_DIR$/.idea/uCRM-data.iml" />
     </modules>
   </component>
 </project>
